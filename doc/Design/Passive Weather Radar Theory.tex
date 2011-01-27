@@ -385,19 +385,6 @@ State information for targets is developed by
 the Target Tracking block. Each target will be represented by an object
 which implements a Kalman Filter.
 
-\clearpage\setcounter{page}{1}
-\chapter[Project Strategy]{Project Strategy}
-\section[Driving Factors]{Driving Factors}
-There are a number of important factors that are unknown at this stage:
-\begin{itemize}
-\item{The suitability of the chosen frequency (880 Mhz) for backscatter from clouds and rain}
-\item{The effect of target motion on transmitter chip rate and symbol rate and its effect on correlation}
-\item{The unknown nature of the propagation model}
-\item{The usefulness of the Telstra \textit{Next G} transmitters as illuminators}
-\end{itemize}
-
-\section[Implications]{Implications}
-In light of the above an initial receiver consisting of a USRP with one DBSRX2 module will be built first. This will allow an investigation of the above concerns. Additionally it will allow familarization with the hardware and its connection to the software.
 
 \clearpage\setcounter{page}{1}
 \chapter[Implementation]{Implementation}
@@ -439,7 +426,7 @@ $N$ = the number of samples in the integration time ($T_sN = T$)
 
 \bigskip
 
-It is evident from equations \ref{eqn:matched_filter_analog} and \ref{eqn:matched_filter_discrete} that the expression for a matched filter is the correlation between the received signal and the transmitted signal delayed by time $\tau$ and Doppler shifted in frequency by $\phi$.
+It is evident from equations \ref{eqn:matched_filter_analog} and \ref{eqn:matched_filter_discrete} that the expression for a matched filter is the Fourier Transform in $\phi$ of the correlation between the received signal and the transmitted signal delayed by time $\tau$.
 
 \bigskip
 
@@ -498,6 +485,7 @@ It has been recognized that the ambiguity function of a transmission signal shou
 These necessary properties limit the possible ambiguity functions and, so, the possible transmitter signals. Any transmitter signal available is certainly going to be a compromise between the above properties.
 
 \section[Resolution]{Resolution}
+\label{sec:Resolution}
 
 In order to optimally detect a target which produces time delay, $\tau$, and Doppler shift, $\phi$, it is necessary to maximize the value of $|\chi(0, 0)|^2$. Also, in order to minimize the detection of false targets it is necessary to minimize the value $|\chi(\tau, \phi)|^2$ for $(\tau, \phi) \ne (0, 0)$. Therefore the ideal transmitter signal is one that yields the ambiguity function so that:
 
@@ -536,6 +524,32 @@ Equation \ref{eqn:TB} resembles an autocorrelation function squared. That is the
 |\chi(\tau, \phi)|^2 = 10 \log{\left(\frac{1}{1 * 10^6}\right)} = -70dB
 \end{math}
 with respect to the strongest signal.
+
+
+\begin{figure}
+\centering 
+\includegraphics{Passive-Weather-Radar-Theory-fig-10.pdf}
+\caption[Ambiguity function of white Gaussian noise]{Ambiguity function of white Gaussian noise}
+\label{fig:10}
+\end{figure}
+
+\begin{figure}
+\centering 
+\includegraphics{Passive-Weather-Radar-Theory-fig-11.pdf}
+\caption[white Gaussian noise autocorrelation]{white Gaussian autocorrelation}
+\label{fig:11}
+\end{figure}
+
+\begin{figure}
+\centering 
+\includegraphics{Passive-Weather-Radar-Theory-fig-12.pdf}
+\caption[white Gaussian noise envelope]{white Gaussian noise envelope}
+\label{fig:12}
+\end{figure}
+
+\bigskip
+
+Figure \ref{fig:10} shows a typical ambiguity function of a white Gaussian noise source. Notice the narrow spike at the origin and the surrounding noise floor. The amplitude ratio between the spike and the floor is improved by increasing the time bandwidth product. Figures \ref{fig:11} and \ref{fig:12} show the autocorrelation function and power or energy spectrum for the white noise source associated with \ref{fig:10}. Note the good autocorrelation characteristic and the $sinc^2()$ shape of the power function, both of which are typical of a source of this type.
 
 \bigskip
 
@@ -704,5 +718,127 @@ In this application it is not the absolute clock stability that is so important 
 \subsection{FPGA}
 
 As noted in section \ref{sub:FPGA1} the FPGA has limited capability but it is desirable to move as much of the front end processing that might normally be done on the host computer into the USRP as possible with a view to reducing USB bandwidth. As a matter of priority a surgery will be made of the Verilog code to see which of it may be discarded in this application and whether discarding any code will allow processing to be moved to the FPGA.
+
+\clearpage\setcounter{page}{1}
+\chapter[Design in the Enviroment]{Design in the Enviroment}
+
+\section[Transmitters of Opurtunity]{Transmitters of Opurtunity}
+
+\subsection[Characteristics of Telstra Next G Transmitters]{Characteristics of Telstra Next G Transmitters}
+
+It is proposed to use transmitters that are components of Telstra's NextG" cell phone network. This network is widely deployed in WA. Typically there is one transmitter in each town which services the surounding district. In addition transmitters are often placed in non urban situations as infill. Also, in urban areas, there are a number of "segmented" transmitters usually driving sector antennae 
+that are tilted in the vertical plane towards the ground.
+
+\bigskip
+
+At this time not a lot is known about how the transmitters are modulated. However, from the license assignments the bandwidth is 9.4 MHz, or less, and the emmision designator is 9M40W7WEC. The first four alpha-numeric characters of the emmision designator signify the bandwidth, in this case 9.40 MHz. The next three alpha-numeric characters signify the modulation, baseband and data types, in this case unspecified modulation, multichannel digital and unspecified data content.
+
+It is expected that the transport access methos is CDMA using DSSS. In this case it is reasonable to assume that the transmitter signal will be modulated by some maximum length sequence, similar to those generated by linear feedfack shift register generators, so that the signal is a Psuedo Random Noise (PRN) stream. In that case the chip rate is probably about 9 MHz.
+
+\bigskip
+
+In rural areas Telstra seems to operate their transmitters on a center frequency of 884.8 MHz (lower 880.1 MHz and upper 889.5 MHz). No doubt each station uses a different speading code so that cell phones may discriminate between the several stations that may be within RF range.
+
+\bigskip
+
+The details of the speading code use to produce the PRN stream is not known but, for this application, it is no necessary to have this knowledge. It is necessary that we faithfully receive each transmitter so that it can be used as a reference for correlating received echoes. Refering to figure \ref{fig:03} this is the main function of the Reference Tracking block.
+
+\bigskip
+
+In section \ref{sec:Resolution} it was asserted that, from SNR and resolution point of views, white Gaussian noise is the best achievable transmitter signal. However, for any number of reasons, white Gaussian noise is not used as the spreading signal. Instead a PRN stream is used in order to produce a signal having equivalent properties, as seen in figure \ref{fig:13}, \ref{fig:08} and \ref{fig:09}.
+
+\begin{figure}
+\centering 
+\includegraphics{Passive-Weather-Radar-Theory-fig-13.pdf}
+\caption[M-Sequence ambiguity function]{M-Sequence ambiguity function}
+\label{fig:13}
+\end{figure}
+
+\begin{figure}
+\centering 
+\includegraphics{Passive-Weather-Radar-Theory-fig-08.pdf}
+\caption[M-Sequence autocorrelation]{M-Sequence autocorrelation}
+\label{fig:08}
+\end{figure}
+
+\begin{figure}
+\centering 
+\includegraphics{Passive-Weather-Radar-Theory-fig-09.pdf}
+\caption[M-Sequence envelope]{M-Sequence envelope}
+\label{fig:09}
+\end{figure}
+
+\subsection[Narrogin, WA]{Narrogin, WA}
+
+Table \ref{tab:02} lists some of the transmitters in the  Narrogin area.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|p{5cm}|c|c|c|}
+\hline
+Site & EIRP & Position & AMG Zone 50 \\ \hline \hline
+CALM Tower Williams Road Narrogin & 34.6 & S32.9383 E117.1575 & 514734 6355510 \\ \hline
+Telstra Radio Terminal Wanerie & 41.1 & S33.0278 E116.8447 & 485518 6345582 \\ \hline
+Western Power/Telstra Site Saunders Hill Wandering Rd Narrogin & 32.4 & S32.8942 E117.1592 & 514900 6360400 \\ \hline
+Telstra CDMA Pt, North Banister & 39.9 & S32.5714 E116.4333 & 446809 6396068 \\ \hline
+Telstra Radio Terminal, Mt Latham & 45 & S33.3153 E117.2769 & 625779 6313713 \\ \hline
+Telstra Site Woglin Hill & 40 & S32.6781 E116.6972 & 471624 6384336 \\ \hline
+Telstra Microwave Site Pingelly & 40.1 & S32.4681 E117.1014 & 509518 6407665 \\ \hline
+\end{tabular}
+\caption{Transmitters in the Narrogin, WA, area in frequency 884.8 MHz}
+\label{tab:02}
+\end{center}
+\end{table}
+
+\begin{figure}
+\centering 
+\includegraphics[scale=0.35]{Narrogin-Transmitter-Locations.jpg}
+\caption[Transmitter Locations in Narrogin Area]{Transmitter Locations in Narrogin Area}
+\label{fig:xmitter-Narrogin}
+\end{figure}
+
+\subsection[Melville, WA]{Melville, WA}
+
+Table \ref{tab:03} lists some of the transmitters in the Melville area.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|p{3.5cm}|c|c|c|c|}
+\hline
+Site & Frequency & EIRP & Position & AMG Zone 50 \\ \hline \hline
+St John of God Hospital, Murdoch & 884.8 & 39.5 & S32.0689 E115.8439 & 390870 6451330 \\ \hline
+St John of God Hospital, Murdoch & 2112.6 & 41.2 & S32.0689 E115.8439 & 390870 6451330 \\ \hline
+St John of God Hospital, Murdoch & 2162.4 & 40.4 & S32.0689 E115.8439 & 390870 6451330 \\ \hline
+St John of God Hospital, Murdoch & 2147.4 & 26.9 & S32.0689 E115.8439 & 390870 6451330 \\ \hline
+K Mart North Lake Rd and South St Kardinya & 884.8 & 40.3 & S32.0686 E115.8142 & 388080 6451320 \\ \hline
+K Mart North Lake Rd and South St Kardinya & 2112.6 & 44.1 & S32.0686 E115.8142 & 388080 6451320 \\ \hline
+Hutchison Site 7 Rawlinson St OConnor & 885.0 & 0 & S32.0603 E115.8003 & 386753 6452212 \\ \hline
+Hutchison Site 7 Rawlinson St OConnor & 2112.6 & 41.1 & S32.0603 E115.8003 & 386753 6452212 \\ \hline
+\end{tabular}
+\caption{Transmitters in the Melville, WA, area}
+\label{tab:03}
+\end{center}
+\end{table}
+
+\begin{figure}
+\centering 
+\includegraphics[scale=0.35]{Melville-Transmitter-Locations.jpg}
+\caption[Transmitter Locations in Melville Area]{Transmitter Locations in Melville Area}
+\label{fig:xmitter-Melville}
+\end{figure}
+
+\clearpage\setcounter{page}{1}
+\chapter[Project Strategy]{Project Strategy}
+\section[Driving Factors]{Driving Factors}
+There are a number of important factors that are unknown at this stage:
+\begin{itemize}
+\item{The suitability of the chosen frequency (880 Mhz) for backscatter from clouds and rain}
+\item{The effect of target motion on transmitter chip rate and symbol rate and its effect on correlation}
+\item{The unknown nature of the propagation model}
+\item{The usefulness of the Telstra \textit{Next G} transmitters as illuminators}
+\end{itemize}
+
+\section[Implications]{Implications}
+In light of the above an initial receiver consisting of a USRP with one DBSRX2 module will be built first. This will allow an investigation of the above concerns. Additionally it will allow familarization with the hardware and its connection to the software.
 
 \end{document}

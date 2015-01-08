@@ -18,6 +18,7 @@ autom4te.cache/
 # Other files
 *.zip
 *.dat
+*.cmplx
 .*.swp
 *.log
 *.aux

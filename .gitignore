@@ -11,3 +11,15 @@
 *.lai
 *.la
 *.a
+
+# Other files
+*.zip
+*.dat
+.*.swp
+*.log
+*.aux
+*.dvi
+*.lof
+*.bak
+*.odt
+*.out

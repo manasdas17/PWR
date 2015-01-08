@@ -1,0 +1,23 @@
+n = 8;
+x = mseq(2, n, 0, 10);
+x_f = interp(x, 9);
+x_inflect = decimate(x_f, 6);
+norm_f = 1 / (2 ^ (n - 2) - 1);
+plot(x_inflect);
+pause;
+y = xcorr(x_inflect);
+plot([-length(y) / 2 + 1: 1: length(y) / 2], y / max(y));
+%plot(y);
+xlabel('t - t_0');
+ylabel('A');
+pause;
+%print('-deps', 'Passive-Weather-Radar-Theory-fig-08.eps')
+plot(fftshift(abs(fft(x_inflect))));
+pause;
+z = 10 * log10(abs(fft(x_inflect)));
+plot([-length(z) / 2 + 1: 1 : length(z) / 2], fftshift(z - max(z)));
+ax = gca();
+xlabel('f - f_0 (1/F_s Hz)');
+ylabel('A (dB)');
+pause;
+%print('-deps', 'Passive-Weather-Radar-Theory-fig-09.eps');

@@ -12,6 +12,9 @@
 *.la
 *.a
 
+# Autoconfig - automake stuff
+autom4te.cache/
+
 # Other files
 *.zip
 *.dat

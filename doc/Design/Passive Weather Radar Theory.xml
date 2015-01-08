@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<article lang="">
+<para>Passive Weather Radar Theory</para>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para>Contents</para>
+<para>Chapter 1</para>
+<para>Chapter 2</para>
+<para>Chapter 3</para>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/><sect1><title>Chapter 1</title><sect2><title>Introduction</title>
+<para>Passive Radar is a system that has many of the same functionality as an active radar system but achieves its goals without transmitting any radio frequency energy. As a substitute for the energy transmitted by an active radar a passive radar relies upon remote transmitters illuminating the area of interest.</para>
+<para/>
+<para>Weather  radar relies on Rayleigh scattering of radio frequency energy by water droplets. Existing active weather radars are typically pulsed Doppler radars using a wavelength of 10cm (S band).</para></sect2><sect2><title>Basic Active Radar Theory</title>
+<para>Active radar works by transmitting a short pulse through a directional antennae and receiving any subsequent reflections via the same antenna. The antenna is then rotated to point in a new direction and  the process repeated.</para>
+<para/>
+<para>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+</para>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para/>
+<para>Fig 1. Time series of an active radar signal.</para>
+<para>The aperture in the radial axis is a function of the transmit pulse width and the aperture in the circumferential axis is a function of the beam width formed by the directional antenna<anchor id="main"/>
+<anchor id="search"/>
+<emphasis>.</emphasis>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis>In practice the antenna is made to turn at a constant rate and the transmitter is made to transmit at a constant repetition rate. The returned radio frequency energy is converted to baseband where signal processing occurs and is then presented to a PPI display for viewing or an A/D converter for further processing (in which case the analog signal processing is, typically, minimal).</emphasis>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis>In addition to signals of interest the return is typically contaminated with unwanted artifacts such as ground clutter. A large amount of this noise may be removed by using Doppler processing in order to </emphasis>
+<emphasis>remove those echoes having a velocity less than some minimum value. In addition the velocity of the returns has significant value in the context of a weather radar. Of course only velocities along the radial axis can be observed.</emphasis>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis>The geometry of an active radar system when the transmitter and the receiver antennas are co located (as they invariably are) is that of radials intersecting co located circles.</emphasis>
+</para>
+<para>
+<para/>
+<para/>
+<emphasis/>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis>Fig 2. Active radar geometry (looking from above).</emphasis>
+</para></sect2><sect2><title>
+<emphasis>Basic Passive Radar Theory</emphasis>
+</title>
+<emphasis>Basic Passive Radar Theory</emphasis>
+<para>
+<emphasis>Because passive radar relies upon transmitters of opportunity the receiver and signal processing must be designed to suit the available illumination. However the transmitter and receiver are very unlikely to be co located so the geometry is possibly not going to be the same as the in the case of an active radar. In general a passive radar will be made to receive the transmission signal and the delayed reflected signals in order to identify targets of interest. As in the case of the active radar, and knowing the frequency and pseudo phase of the transmitter, Doppler processing may be employed. In general geometrical and receiver dynamic range considerations will require the more than one transmitter be used.</emphasis>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis>There are two realizable implementations of a passive radar. One involves a directional beam pattern </emphasis>
+</para>
+<para>
+<emphasis/>
+</para>
+<para>
+<emphasis/>
+</para></sect2></sect1></article>

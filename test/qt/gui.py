@@ -16,7 +16,7 @@ class my_tb(gr.top_block):
        fftsize = 2048
 
        self.src = gr.sig_source_c(1, gr.GR_SIN_WAVE, 0.1, 1)
-       self.nse = gr.noise_source_c(gr.GR_GAUSSIAN, 0.1)
+       self.nse = gr.noise_source_c(gr.GR_GAUSSIAN, 0.0)
        self.add = gr.add_cc()
        self.thr = gr.throttle(gr.sizeof_gr_complex, 100*fftsize)
        self.snk = qtgui.sink_c(fftsize, gr.firdes.WIN_BLACKMAN_hARRIS)

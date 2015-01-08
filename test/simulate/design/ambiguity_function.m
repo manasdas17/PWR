@@ -38,15 +38,15 @@ if nt~=length(z)
   error('length of arguments z and t must be the same');
 end
 X = zeros(ntau,nphi);
-for itau = 1:ntau,
-  n = round(tau(itau)/t_sp);
-  if (abs(n)<nt);
-    if (n>=0);
-      temp = [z(1:nt-n)] .* [conj(z(n+1:nt))];
-      X(itau,:) = temp.' * [exp(-i*2*pi*t(1:nt-n)*phi')];
+for itau = 1: ntau,
+  n = round(tau(itau) / t_sp);
+  if (abs(n) < nt);
+    if (n >= 0);
+      temp = [z(1: nt - n)] .* [conj(z(n + 1: nt))];
+      X(itau,:) = temp.' * [exp(-i * 2 * pi * t(1:nt - n) * phi')];
     else
-      temp = [z(-n+1:nt)] .* [conj(z(1:nt+n))];
-      X(itau,:) = temp.' * [exp(-i*2*pi*t(-n+1:nt)*phi')];
+      temp = [z(-n + 1: nt)] .* [conj(z(1: nt + n))];
+      X(itau,:) = temp.' * [exp(-i * 2*pi * t(-n + 1: nt) * phi')];
     end
   end
 end

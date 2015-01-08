@@ -1,17 +1,12 @@
-t = [0:63]'; z = exp(i * 2 * pi * 4 / 64 * t);
-tau = [-64:4:64]'; phi = [-0.16:0.016:0.16]';
+n_max = 64;
+t_s = 4;
 
-X = amb(z, t, tau, phi);
-mesh(phi, tau(2:32), 10 * log10(X(2:32,1:21))); %axis tight;
-disp('Sine wave');
-pause;
+t = [0: n_max - 1]'; z = randn(size(t));  % z is white Gaussian noise.
+tau = [-n_max: t_s: n_max]'; phi = [-0.16:0.016:16]';
 
-t = [0:63]'; z = rand(size(t));
-disp(z);
-tau = [-64:4:64]'; phi = [-0.16:0.016:16]';
-
-X = amb(z, t, tau, phi);
-disp(X);
-mesh(phi(1:21), tau(2:32), 10 * log10(X(2:32, 1:21)));
+X = xamb(z, phi, 
+mesh(10 * log10(X));
 disp('White noise');
+xlabel('\tau');
+ylabel('\phi');
 pause;

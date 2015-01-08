@@ -1,4 +1,4 @@
-function M = match(xr,xt,fs,tau,phi,win)
+function M = match(xr, xt, fs, tau, phi, win)
 % Matched filter radar receiver
 %
 % M = MATCH(xr,xt,fs,tau,phi,win)
@@ -46,51 +46,54 @@ function M = match(xr,xt,fs,tau,phi,win)
 %
 % By Maurice Ringer, 1998
 error(nargchk(3, 6, nargin));
-nx = length(xr);
-if nx~=length(xt);
+x_n = length(xr);
+if x_n ~= length(xt);
   error('xt and xr must be the same length')
 end
-if nargin<4, tau = [];  end
-if nargin<5, phi = [];  end
-if nargin<6, win = [];  end
+if nargin < 4, tau = [];  end
+if nargin < 5, phi = [];  end
+if nargin < 6, win = [];  end
 if isempty(tau), tau = [0:1 / fs:nx / fs]; end
 if isempty(phi), phi = [-fs:fs / 50:fs];   end
-if isempty(win), win = ones(nx, 1);        end
-if isstr(win)
+if isempty(win), win = ones(x_n, 1);        end
+if ischar(win)
   win = lower(win);
   if strcmp(win, 'hanning')
-    win = 0.5 * (1 - cos(2 * pi* [1:nx]'/(nx + 1)));
+    win = 0.5 * (1 - cos(2 * pi* [1:x_n]'/(x_n + 1)));
   elseif strcmp(win, 'hamming')
-    win = 0.54 - 0.46 * cos(2 * pi* [0:nx - 1]'/(nx - 1));
+    win = 0.54 - 0.46 * cos(2 * pi* [0:x_n - 1]'/(x_n - 1));
   elseif strcmp(win, 'blackman')
-    win = (0.42 - 0.5 * cos(2 * pi * (0:nx - 1) / (nx - 1)) + ...
-      0.08 * cos(4 * pi * (0:nx - 1) / (nx - 1)))';
+    win = (0.42 - 0.5 * cos(2 * pi * (0:x_n - 1) / (x_n - 1)) + ...
+      0.08 * cos(4 * pi * (0:x_n - 1) / (x_n - 1)))';
   elseif strcmp(win, 'boxcar')
-    win = ones(nx, 1);
+    win = ones(x_n, 1);
   else
     warning('Funny window argument - no window used');
-    win = ones(nx, 1);
+    win = ones(x_n, 1);
   end
 end
-ntau = length(tau);
-nphi = length(phi);
-xr = xr(:)' .* win;
-xt = xt(:)' .* win;
+tau_n = length(tau);
+phi_n = length(phi);
+xr = xr(:) .* win;
+xt = xt(:) .* win;
 phi = phi(:);
-M = zeros(ntau, nphi);
-for itau = 1:ntau,
-  n = round(tau(itau) * fs)
-  if (abs(n) < nx)
+ts = 1 / fs;
+M = zeros(tau_n, phi_n);
+for tau_i = 1: tau_n,
+  n = round(tau(tau_i) * ts)
+  if (abs(n) < x_n)
     if (n >= 0)
-      temp = xr(1 + n:nx) .* conj(xt(1:nx - n));
-      t = [n / fs:1 / fs:(nx - 1) / fs];
+      temp = xr(1 + n: x_n) .* conj(xt(1: x_n - n));
+      temp(length(temp) + 1: x_n) = zeros(-length(temp) - 1 + x_n);
+      t = [n * ts: ts: (x_n - 1) * ts];
+      t = [(-x_n / 2 + 1) * ts: ts : (x_n / 2 - 0) * ts];
+      disp(t);
     else
-      temp = xr(1:nx + n) .* conj(xt(1 - n:nx));
-      t = [0:1/fs:(nx + n - 1) / fs];
+      temp = xr(1: x_n + n) .* conj(xt(1 - n: x_n));
+      t = [0: ts: (x_n + n - 1) * ts];
     end
-    disp(nphi);
-    disp(length(t));
-    M(itau,:) = (exp(-i * 2 * pi * phi .* t) * temp);
+    temp = xr .* xt;
+    M(tau_i, :) = (exp(-i * 2 * pi * phi .* t') .* temp);
   end
 end
 M = abs(M).^2;

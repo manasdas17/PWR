@@ -87,11 +87,11 @@
 
 \clearpage\setcounter{page}{1}
 \chapter[Project Purpose and Scope]{Project Purpose and Scope}
-The primary objectives of this project is to build and instrument using GNURadio and an Ettus LLC USRP in order to evaluate the former and gain experience on both. A Passive Weather Radar has been choosen as the vehicle to these ends because it is expansive enough to exercise GNURadio and it has some chance of success.
+The primary objectives of this project is to build and instrument using GNURadio and an Ettus LLC USRP in order to evaluate the former and gain experience on both. A Passive Weather Radar has been chosen as the vehicle to these ends because it is expansive enough to exercise GNURadio and it has some chance of success.
 
 \bigskip
 
-The literature suggests that frequencies below L band reflect well from precipitation. With the introduction of Telstra's "Next G" cell phone net work a number of wide band signals from moderatly powerfull transmitters using 800 MHz to 900 MHz is avaliable. These signals have the desirable characteristic of mimicking bandwidth limited white noise.
+The literature suggests that frequencies below L band reflect well from precipitation. With the introduction of Telstra's "Next G" cell phone net work a number of wide band signals from moderately powerful transmitters using 800 MHz to 900 MHz is available. These signals have the desirable characteristic of mimicking bandwidth limited white noise.
 
 \bigskip
 
@@ -99,7 +99,7 @@ There is also some suggestion that air current eddies may be detectable at about
 
 \bigskip
 
-So the secondary objectives are to investigate the possibility of using the Telstra signals for examining these phenomon with no particular expectation of sucess or failure.
+So the secondary objectives are to investigate the possibility of using the Telstra signals for examining these phenomenon with no particular expectation of success or failure.
 
 \clearpage\setcounter{page}{1}
 \chapter[Introduction]{Introduction}
@@ -120,7 +120,7 @@ Doppler radars using a wavelength of 10cm (S band).
 Active radar works by transmitting a short pulse through a directional
 antennae and receiving any subsequent reflections via the same antenna.
 The antenna is then rotated to point in a new direction and \ the
-process repeated. Figure \ref{fig:01} shows a typical transmission and receiption of an active radar.
+process repeated. Figure \ref{fig:01} shows a typical transmission and reception of an active radar.
 
 \begin{figure}
 \centering 
@@ -412,6 +412,8 @@ $x_t^*(t + \tau)$ = the complex conjugate transmitted signal
 
 $\tau$ = the delay induced by the sum of the ranges from the transmitter to the receiver via the target
 
+$\phi$ = the Doppler frequency induced by the sum of the velocities from the transmitter to the receiver via the target.
+
 \bigskip
 
 In practice a matched filter is usually implemented digitally in which case $x_r(t)$ and $x_t(t)$ are converted into digital signals $x_r[n]$ and $x_t[n]$ where $x[n] = x(nT_s)$ and $T_s$ is the constant sample period. In discrete form the output is:
@@ -439,7 +441,7 @@ If the noise corrupting the received signal is additive white Gaussian the follo
 \end{itemize}
 
 \section[The Ambiguity Function]{The Ambiguity Function}
-Passive Radars are reliant on transmitions of opportunity and the maximum information that may be extracted from a signal from a target is encapsulated in these transmittions. It is useful to characterize the available transmissions. This is the purpose of the ambiguity function $\chi(\tau, \phi)$.
+Passive Radars are reliant on transmissions of opportunity and the maximum information that may be extracted from a signal from a target is encapsulated in these transmissions. It is useful to characterize the available transmissions. This is the purpose of the ambiguity function $\chi(\tau, \phi)$.
 
 \begin{equation}
 \chi(\tau, \phi) = \frac{1}{T} \int_0^T x(t)x^*(t + \tau)e^{-i\phi t}dt
@@ -553,10 +555,10 @@ Figure \ref{fig:10} shows a typical ambiguity function of a white Gaussian noise
 
 \bigskip
 
-Refering to figure \ref{fig:03} it can be seen that the input to the Cross Correlation Block is from the Adaptive Filtering Block. It is proposed that this latter block in conjunction with the Reference Tracking Block will antennuate the transmitter signal with respect to the echoes and so increase the dynamic range of the Cross Correlation Block. Further it will probably be necessary to shield the antennae in the direction of the transmitter in order to antennuate this signal even further although the advantage of this measure is to maximize the dynamic range of the analog portion of the receiver in order not to overload it.
+Referring to figure \ref{fig:03} it can be seen that the input to the Cross Correlation Block is from the Adaptive Filtering Block. It is proposed that this latter block in conjunction with the Reference Tracking Block will attenuate the transmitter signal with respect to the echoes and so increase the dynamic range of the Cross Correlation Block. Further it will probably be necessary to shield the antennae in the direction of the transmitter in order to attenuate this signal even further although the advantage of this measure is to maximize the dynamic range of the analog portion of the receiver in order not to overload it.
 
 \section[Implementation Problems]{Implementation Problems}
-Typically Passive Radar processing is done digitally and, in fact, cannot, now days, be done practically done using analog techniquics. The digital nature of the processing imposes its own set of problems.
+Typically Passive Radar processing is done digitally and, in fact, cannot, now days, be done practically done using analog techniques. The digital nature of the processing imposes its own set of problems.
 
 \bigskip
 
@@ -705,6 +707,8 @@ Multipliers & 0 \\ \hline
 
 \section[Design Constrains]{Design Constrains}
 \subsection[USB Channel Bandwidth]{USB Channel Bandwidth}
+\label{sub:USB}
+
 As noted in \ref{sub:USB1} the USB data bandwidth is about 13 MS/s which limits the baseband width to about 6.5 MHz. This encourages the design to move as much processing to the USRP FPGA in order to reduce the demands on the USB channel. If this proves impossible it may be necessary to synthesize a baseband bandwidth by making observations closely spaced in time with different local oscillator values.
 
 \subsection[Clock Stability]{Clock Stability}
@@ -725,23 +729,24 @@ As noted in section \ref{sub:FPGA1} the FPGA has limited capability but it is de
 \section[Transmitters of Opurtunity]{Transmitters of Opurtunity}
 
 \subsection[Characteristics of Telstra Next G Transmitters]{Characteristics of Telstra Next G Transmitters}
+\label{sub:Telstra}
 
-It is proposed to use transmitters that are components of Telstra's NextG" cell phone network. This network is widely deployed in WA. Typically there is one transmitter in each town which services the surounding district. In addition transmitters are often placed in non urban situations as infill. Also, in urban areas, there are a number of "segmented" transmitters usually driving sector antennae 
+It is proposed to use transmitters that are components of Telstra's NextG" cell phone network. This network is widely deployed in WA. Typically there is one transmitter in each town which services the surrounding district. In addition transmitters are often placed in non urban situations as in fill. Also, in urban areas, there are a number of "segmented" transmitters usually driving sector antennae 
 that are tilted in the vertical plane towards the ground.
 
 \bigskip
 
-At this time not a lot is known about how the transmitters are modulated. However, from the license assignments the bandwidth is 9.4 MHz, or less, and the emmision designator is 9M40W7WEC. The first four alpha-numeric characters of the emmision designator signify the bandwidth, in this case 9.40 MHz. The next three alpha-numeric characters signify the modulation, baseband and data types, in this case unspecified modulation, multichannel digital and unspecified data content.
+At this time not a lot is known about how the transmitters are modulated. However, from the license assignments the bandwidth is 9.4 MHz, or less, and the emission designator is 9M40W7WEC. The first four alpha-numeric characters of the emission designator signify the bandwidth, in this case 9.40 MHz. The next three alpha-numeric characters signify the modulation, baseband and data types, in this case unspecified modulation, multichannel digital and unspecified data content.
 
-It is expected that the transport access methos is CDMA using DSSS. In this case it is reasonable to assume that the transmitter signal will be modulated by some maximum length sequence, similar to those generated by linear feedfack shift register generators, so that the signal is a Psuedo Random Noise (PRN) stream. In that case the chip rate is probably about 9 MHz.
-
-\bigskip
-
-In rural areas Telstra seems to operate their transmitters on a center frequency of 884.8 MHz (lower 880.1 MHz and upper 889.5 MHz). No doubt each station uses a different speading code so that cell phones may discriminate between the several stations that may be within RF range.
+It is expected that the transport access methods is CDMA using DSSS. In this case it is reasonable to assume that the transmitter signal will be modulated by some maximum length sequence, similar to those generated by linear feedback shift register generators, so that the signal is a Pseudo Random Noise (PRN) stream. In that case the chip rate is probably about 9 MHz.
 
 \bigskip
 
-The details of the speading code use to produce the PRN stream is not known but, for this application, it is no necessary to have this knowledge. It is necessary that we faithfully receive each transmitter so that it can be used as a reference for correlating received echoes. Refering to figure \ref{fig:03} this is the main function of the Reference Tracking block.
+In rural areas Telstra seems to operate their transmitters on a center frequency of 884.8 MHz (lower 880.1 MHz and upper 889.5 MHz). No doubt each station uses a different spreading code so that cell phones may discriminate between the several stations that may be within RF range.
+
+\bigskip
+
+The details of the spreading code use to produce the PRN stream is not known but, for this application, it is no necessary to have this knowledge. It is necessary that we faithfully receive each transmitter so that it can be used as a reference for correlating received echoes. Referring to figure \ref{fig:03} this is the main function of the Reference Tracking block.
 
 \bigskip
 
@@ -827,6 +832,33 @@ Hutchison Site 7 Rawlinson St OConnor & 2112.6 & 41.1 & S32.0603 E115.8003 & 386
 \label{fig:xmitter-Melville}
 \end{figure}
 
+\section[Problem of Limited Baseband Bandwidth]{Problem of Limited Baseband Bandwidth}
+
+As mention in \ref{sub:USB} in the default configuration the USB link limits the baseband bandwidth to about 6.5 MHz. From \ref{sub:Telstra} it can be seen that the required baseband bandwidth is about 9.5 MHz. Possible solutions are:
+
+\begin{itemize}
+\item{Decimate the data in order to reduce the baseband bandwidth to about 6.5 MHz.}
+\item{Transfer 8 bit samples across the USB link.}
+\item{Transfer 12 bit samples across the USB link.}
+\item{"Chop" the data stream.}
+\end{itemize}
+
+\bigskip
+
+The first option will mean that the signal bandwidth will be much less that the expected bandwidth of the PRN signal. This will adversely effect the matched filter characteristics. Just as importantly the discrimination between the several transmitters relies on the ability to receive and track the PRN signal which will be adversely effected by the reduced bandwidth.
+
+\bigskip
+
+The second option will severely reduce the dynamic range and SNR of the system. This option may require changes to the FPGA and driver codes.
+
+\bigskip
+
+The third option shows promise. It is not sure why this is not done in any case. The receiver ADCs have 12 bit resolution. Packing these 12 bit samples would give a baseband bandwidth of about 9.31 MHz. For this application this bandwidth may be marginally sufficient. This option will require changes to the FPGA and driver codes.
+
+\bigskip
+
+The fourth option is probably the best. This option involves transmitting a block of time domain samples and then discarding a following block of samples. The size of the blocks would be such that the buffers in the FPGA and USB controller. The available buffering is about 4096 samples. From the signal processing point of view this is equivalent to multiplying the time domain signal by one corresponding to the samples transmitted and zero otherwise. As long as sample clock phase is maintained (i.e. the receiver software "knows" the number of samples dropped) then the bandwidth is equal to $F_s / 2$. However the $TB$ product is affected proportionally.
+
 \clearpage\setcounter{page}{1}
 \chapter[Project Strategy]{Project Strategy}
 \section[Driving Factors]{Driving Factors}
@@ -839,6 +871,6 @@ There are a number of important factors that are unknown at this stage:
 \end{itemize}
 
 \section[Implications]{Implications}
-In light of the above an initial receiver consisting of a USRP with one DBSRX2 module will be built first. This will allow an investigation of the above concerns. Additionally it will allow familarization with the hardware and its connection to the software.
+In light of the above an initial receiver consisting of a USRP with one DBSRX2 module will be built first. This will allow an investigation of the above concerns. Additionally it will allow familiarization with the hardware and its connection to the software.
 
 \end{document}
